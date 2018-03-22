@@ -164,7 +164,6 @@
         {% set rules = attribute(mlsRules, idxID) %}
         <div class="IDX-field-{{ type }} IDX-field-price IDX-field">
             <span class="IDX-label">{{ label }}</span>
-            <span class="IDX-text">{{ formatPrice(price) }}{{ rules.priceSuffix }}</span>
         </div>
     {% endspaceless %}
 {% endmacro %}
@@ -279,7 +278,7 @@
                             <div class="IDX-row-content">
                                 <!-- Content row. -->
                                 {# Displays the whole address for a listings (will be a link to details page). #}
-                                <div class="IDX-resultsAddress">
+                                <div id="{{ listing.latitude }},{{ listing.longitude }}" class="IDX-resultsAddress">
                                     <a href="{{ listing.detailsURL }}" class="IDX-resultsAddressLink">
                                         {# Street info. #}
                                         <span class="IDX-resultsAddressNumber">{{ listing.streetNumber }} </span>
@@ -294,18 +293,16 @@
                                         <span class="IDX-resultsEndAddressCommaTwo">, </span>
                                         <span class="IDX-resultsAddressState">{{ listing.state }} </span>
                                         <span class="IDX-resultsAddressStateAbrv">{{ listing.stateAbrv }} </span>
-                                        <span class="IDX-resultsAddressZip">{{ listing.zipcode }}</span>
+                                        <span class="IDX-resultsAddressZip">{{ listing.zipcode }}</span>            
                                         {% if listing.zip4 > 0 %}<span class="IDX-addressZip4">-{{ listing.zip4 }}</span>{% endif %}
                                     </a>
                                 </div>
                                 {# Display the primary photo. #}
                                 <div class="IDX-resultsPhoto">
                                     <a href="{{ listing.detailsURL }}" class="IDX-resultsPhotoLink">
-                                        <noscript class="IDX-loadImage" data-src="{{ listing.primaryPhoto }}">
-                                            <img alt="{{ listing.address }}, {{ listing.cityName }}, {{ listing.stateAbrv }} {{ listing.zipcode }}" src="{{ listing.primaryPhoto }}" class="IDX-resultsPhotoImg" {% if width %}width="{{ width }}" {% endif %} {% if height %}height="{{ height }}"{% endif %}>
-                                        </noscript>
+                                    <img src="{{ listing.primaryPhoto }}" class="IDX-resultsPhotoImg" />
                                     </a>
-                                </div>
+                                </div>                                
                                 <div class="IDX-resultsMainInfo IDX-panel IDX-panel-default">
                                     <div class="IDX-panel-heading">
                                         {% spaceless %}
@@ -466,6 +463,7 @@
                             </div>
                             {{ listing.listingSelectorCourtesy|raw }}
                         </div>
+                        <span class="IDX-resultsAddressLatLng">{{ listing.latitude }},{{ listing.longitude }}</span>
                     </div>
                 {% endfor %}
                 </div>
@@ -484,19 +482,88 @@
         </a>
     </li>
 {% endmacro %}
-{# Results map. #}
                    
-{# New map pins+clusters. #}
-{% include 'leaflet-1.001.twig' %}
-
 {# Results content. #}
 {{ tools.resultsContent(category, resultData, orderByRule, orderByPropTypes, orderByPtField) }}
 
 <div id="IDX-custom-resultsMap">
                         <div id="IDX-map"></div>
                     </div>
-                    
 
                     {% include 'multipleMlsDisclaimers-1.000.twig' %}
+<script>
+function fillMap(iconset, glyphs, green) {
+		
+        var propPins = [[38.171222,-84.802055],[38.107696,-84.707504],[38.10883,-84.788876]];
 
+		// tile source options
+		var greyTiles = 'http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png';
+    	var colorsTiles = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+    	
+        // lat and long from div above
+		var pins = document.querySelectorAll(".IDX-resultsAddressLatLng"); 
+        var pinsArray = [];
+        for (var i = 0; i < pins.length; i++) {
+        	newArray = []
+            newArray.push(pins[i].innerText);
+        	pinsArray.push(newArray);
+        }
+        
+        console.log(pinsArray);
+        
+    	var mainPin = pinsArray[0].toString();;
+        var res = mainPin.split(",");
+		var myCenter = new L.LatLng(res[0], res[1]);
+        
+        // new map
+		var map = new L.Map('IDX-map', {center: myCenter, zoom: 10});
 
+		var positron = L.tileLayer(colorsTiles, {
+			attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="http://cartodb.com/attributions">CartoDB</a>',
+			maxZoom: 24,
+			maxNativeZoom: 18
+		}).addTo(map);
+        
+        //marker icons
+        var LeafIcon = L.Icon.extend({
+		options: {
+			shadowUrl: '',
+			iconSize:     [38, 38],
+			shadowSize:   [0, ],
+			iconAnchor:   [22, 94],
+			shadowAnchor: [4, 62],
+			popupAnchor:  [-3, -76]
+		}
+	});
+
+	//pin icons
+	var greenIcon = new LeafIcon({iconUrl: 'https://cdn0.iconfinder.com/data/icons/3D-House-png/128/Traditional-Home.png'}),
+		redIcon = new LeafIcon({iconUrl: '//:yourImage.png'}),
+		orangeIcon = new LeafIcon({iconUrl: '//:yourImage.png'});
+	
+   
+    
+    // add map pins
+    for (var i = 0; i < pinsArray.length; i++) {
+    	var latLong = pinsArray[i].toString();
+        var res = latLong.split(",");
+        var markerLocation = new L.LatLng(res[0],res[1]);
+		L.marker(markerLocation, {icon: greenIcon, title: latLong}).addTo(map).on('click', onPinClick);
+   }
+   
+      function onPinClick(e) {
+      	var scrollDiv = e.target.options.title;
+		document.getElementById(scrollDiv).scrollIntoView({behavior: 'smooth'});
+	}
+   
+ }
+	// Material Design Icons
+	fillMap('mdi', [
+		'compass', 'directions', 'help-circle', 'cloud', 'clock',
+		'fire', 'flower', 'human-male-female', 'information', 'lock',
+		'key', 'marker-check', 'leaf', 'mouse', 'nature',
+		'navigation', 'music-circle', 'panorama', 'pause-circle', 'phone',
+		'school', 'sd', 'security', 'subway', 'ticket'
+	], true);
+  
+</script>
