@@ -444,11 +444,12 @@
     .IDX-wrapper-standard .IDX-resultsSaveProperty,
     .IDX-wrapper-standard .IDX-resultsDetailsLink {
         display: inline-block;
+        display: inline-block;
     }
     .IDX-wrapper-standard .IDX-resultsCellAction {
         float: left;
     }
-}
+
 
 #IDX-resultsContent {
 	width:40%;
@@ -460,3 +461,9 @@
     height: 800px;
 }
 
+span.IDX-resultsAddressLatLng {
+    display: none;
+}
+span.IDX-resultsAddressLatLng {
+    display: none;
+	}
