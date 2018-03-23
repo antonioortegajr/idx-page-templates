@@ -300,7 +300,7 @@
                                 {# Display the primary photo. #}
                                 <div class="IDX-resultsPhoto">
                                     <a href="{{ listing.detailsURL }}" class="IDX-resultsPhotoLink">
-                                    <img src="{{ listing.primaryPhoto }}" class="IDX-resultsPhotoImg" />
+                                    <img src="{{ listing.primaryPhoto }}" class="IDX-resultsPhotoImg" />                 
                                     </a>
                                 </div>                                
                                 <div class="IDX-resultsMainInfo IDX-panel IDX-panel-default">
@@ -509,8 +509,6 @@ function fillMap(iconset, glyphs, green) {
         	pinsArray.push(newArray);
         }
         
-        console.log(pinsArray);
-        
     	var mainPin = pinsArray[0].toString();;
         var res = mainPin.split(",");
 		var myCenter = new L.LatLng(res[0], res[1]);
@@ -553,7 +551,7 @@ function fillMap(iconset, glyphs, green) {
    
       function onPinClick(e) {
       	var scrollDiv = e.target.options.title;
-		document.getElementById(scrollDiv).scrollIntoView({behavior: 'smooth'});
+		document.getElementById(scrollDiv).scrollIntoView({behavior: 'smooth', block: "end"});
 	}
    
  }
@@ -565,5 +563,5 @@ function fillMap(iconset, glyphs, green) {
 		'navigation', 'music-circle', 'panorama', 'pause-circle', 'phone',
 		'school', 'sd', 'security', 'subway', 'ticket'
 	], true);
-  
+
 </script>
