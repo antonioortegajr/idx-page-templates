@@ -2,5 +2,8 @@
 twig files for custom templates in IDX Broker.
 
 # Use
+The partner custom templating system is now live in the developer partner dashboard. Log in and go to https://middleware.idxbroker.com/mgmt/custom-templates#/ to being. You can find a tutorial on developers.idxbroker.com https://developers.idxbroker.com/course/custom-templates/
+
 Samples are in folders based on page type. Modify as you see fit.
-Submit to IDX Broker for review.
+
+
