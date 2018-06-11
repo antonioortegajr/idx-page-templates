@@ -302,7 +302,7 @@
                                     <a href="{{ listing.detailsURL }}" class="IDX-resultsPhotoLink">
                                     <img src="{{ listing.primaryPhoto }}" class="IDX-resultsPhotoImg" />                 
                                     </a>
-                                </div>                                
+                                </div>             
                                 <div class="IDX-resultsMainInfo IDX-panel IDX-panel-default">
                                     <div class="IDX-panel-heading">
                                         {% spaceless %}
@@ -491,6 +491,18 @@
                     </div>
 
                     {% include 'multipleMlsDisclaimers-1.000.twig' %}
+                    
+                    
+<link rel="stylesheet" href="//d1qfrurkpai25r.cloudfront.net/graphical/css/leaflet.css?auid=Wx8BCn8AAAEAAAMVwRwAAAAB" />
+
+<link rel="stylesheet" href="//d1qfrurkpai25r.cloudfront.net/graphical/css/leaflet.label.css?auid=Wx8BCn8AAAEAAAMVwRwAAAAB" />
+
+<link rel="stylesheet" href="//d1qfrurkpai25r.cloudfront.net/graphical/css/leaflet.draw.css?auid=Wx8BCn8AAAEAAAMVwRwAAAAB" />
+<script type="text/javascript" src="//d1qfrurkpai25r.cloudfront.net/graphical/javascript/leaflet.js"></script>
+<script type="text/javascript" src="//d1qfrurkpai25r.cloudfront.net/graphical/frontend/javascript/maps/plugins/leaflet.draw.js"></script>
+<script type="text/javascript" src="//www.mapquestapi.com/sdk/leaflet/v2.2/mq-map.js?key=Gmjtd%7Cluub2h0rn0%2Crx%3Do5-lz1nh"></script>
+<link rel="stylesheet" href="//d1qfrurkpai25r.cloudfront.net/graphical/css/leaflet-1.000.css" />
+<link rel="stylesheet" href="//d1qfrurkpai25r.cloudfront.net/graphical/css/leaflet.label.css" />
 <script>
 function fillMap(iconset, glyphs, green) {
 		
@@ -555,13 +567,20 @@ function fillMap(iconset, glyphs, green) {
 	}
    
  }
-	// Material Design Icons
-	fillMap('mdi', [
-		'compass', 'directions', 'help-circle', 'cloud', 'clock',
-		'fire', 'flower', 'human-male-female', 'information', 'lock',
-		'key', 'marker-check', 'leaf', 'mouse', 'nature',
-		'navigation', 'music-circle', 'panorama', 'pause-circle', 'phone',
-		'school', 'sd', 'security', 'subway', 'ticket'
-	], true);
+// Material Design Icons
+idx(document).ready(function () {
+    if (window.map !== undefined) {
+        // Reset instance of L.map:
+        window.map.off();
+        window.map.remove();
+    }
+    fillMap('mdi', [
+        'compass', 'directions', 'help-circle', 'cloud', 'clock',
+        'fire', 'flower', 'human-male-female', 'information', 'lock',
+        'key', 'marker-check', 'leaf', 'mouse', 'nature',
+        'navigation', 'music-circle', 'panorama', 'pause-circle', 'phone',
+        'school', 'sd', 'security', 'subway', 'ticket'
+    ], true);
+});
 
 </script>
