@@ -494,9 +494,7 @@
                     
                     
 <link rel="stylesheet" href="//d1qfrurkpai25r.cloudfront.net/graphical/css/leaflet.css?auid=Wx8BCn8AAAEAAAMVwRwAAAAB" />
-
 <link rel="stylesheet" href="//d1qfrurkpai25r.cloudfront.net/graphical/css/leaflet.label.css?auid=Wx8BCn8AAAEAAAMVwRwAAAAB" />
-
 <link rel="stylesheet" href="//d1qfrurkpai25r.cloudfront.net/graphical/css/leaflet.draw.css?auid=Wx8BCn8AAAEAAAMVwRwAAAAB" />
 <script type="text/javascript" src="//d1qfrurkpai25r.cloudfront.net/graphical/javascript/leaflet.js"></script>
 <script type="text/javascript" src="//d1qfrurkpai25r.cloudfront.net/graphical/frontend/javascript/maps/plugins/leaflet.draw.js"></script>
@@ -540,7 +538,7 @@ function fillMap(iconset, glyphs, green) {
 			shadowUrl: '',
 			iconSize:     [38, 38],
 			shadowSize:   [0, ],
-			iconAnchor:   [22, 94],
+			iconAnchor:   [22, 38],
 			shadowAnchor: [4, 62],
 			popupAnchor:  [-3, -76]
 		}
@@ -562,8 +560,9 @@ function fillMap(iconset, glyphs, green) {
    }
    
       function onPinClick(e) {
+      console.log(e);
       	var scrollDiv = e.target.options.title;
-		document.getElementById(scrollDiv).scrollIntoView({behavior: 'smooth', block: "end"});
+		document.getElementById(scrollDiv).scrollIntoView({behavior: 'smooth', block: "start"});
 	}
    
  }
