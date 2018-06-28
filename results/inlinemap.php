@@ -504,11 +504,12 @@
 <script>
 function fillMap(iconset, glyphs, green) {
 		
-        var propPins = [[38.171222,-84.802055],[38.107696,-84.707504],[38.10883,-84.788876]];
-
 		// tile source options
-		var greyTiles = 'http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png';
-    	var colorsTiles = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+       // var mapTiles = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+		var mapTiles = 'http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png';
+    	
+        //var propPin = 'https://cdn0.iconfinder.com/data/icons/3D-House-png/128/Traditional-Home.png';
+        var propPin = 'https://s3.amazonaws.com/uploads.hipchat.com/10705/290530/V4fWJn2x91SFCWK/crayon.png';
     	
         // lat and long from div above
 		var pins = document.querySelectorAll(".IDX-resultsAddressLatLng"); 
@@ -526,7 +527,7 @@ function fillMap(iconset, glyphs, green) {
         // new map
 		var map = new L.Map('IDX-map', {center: myCenter, zoom: 10});
 
-		var positron = L.tileLayer(colorsTiles, {
+		var positron = L.tileLayer(mapTiles, {
 			attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="http://cartodb.com/attributions">CartoDB</a>',
 			maxZoom: 24,
 			maxNativeZoom: 18
@@ -545,12 +546,10 @@ function fillMap(iconset, glyphs, green) {
 	});
 
 	//pin icons
-	var greenIcon = new LeafIcon({iconUrl: 'https://cdn0.iconfinder.com/data/icons/3D-House-png/128/Traditional-Home.png'}),
+	var greenIcon = new LeafIcon({iconUrl: propPin}),
 		redIcon = new LeafIcon({iconUrl: '//:yourImage.png'}),
 		orangeIcon = new LeafIcon({iconUrl: '//:yourImage.png'});
 	
-   
-    
     // add map pins
     for (var i = 0; i < pinsArray.length; i++) {
     	var latLong = pinsArray[i].toString();
@@ -558,9 +557,9 @@ function fillMap(iconset, glyphs, green) {
         var markerLocation = new L.LatLng(res[0],res[1]);
 		L.marker(markerLocation, {icon: greenIcon, title: latLong}).addTo(map).on('click', onPinClick);
    }
-   
-      function onPinClick(e) {
-      console.log(e);
+   // scroll to prop from pin click
+     function onPinClick(e) {
+      	console.log(e);
       	var scrollDiv = e.target.options.title;
 		document.getElementById(scrollDiv).scrollIntoView({behavior: 'smooth', block: "start"});
 	}
