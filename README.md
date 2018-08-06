@@ -6,4 +6,6 @@ The partner custom templating system is now live in the developer partner dashbo
 
 Samples are in folders based on page type. Modify as you see fit.
 
+Youtube video: https://www.youtube.com/watch?v=Qnq94YN7BPg&t=1319s
+
 
