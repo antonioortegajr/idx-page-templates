@@ -205,7 +205,7 @@
                                     {{ _self.priceField(rntLse,rntLsePrice) }}
                                 {% else %}
                                     {{ _self.priceField('listingPrice',listingPrice) }}
-                                    <meta itemProp="price" content="{{listingPrice}}"/><meta itemProp="priceCurrency" content="USD"/>
+                                    <meta itemProp="price" content="{{listingPrice | replace({"," : ""}) | replace({"$" : ""}) }}"/><meta itemProp="priceCurrency" content="USD"/>
                                 {% endif %}
                                 {% if pricePerSqFt > 0 %}
                                     {{ _self.field(_context, 'pricePerSqFt', labels.pricePerSqFt, { priceFormat: true }) }}
@@ -243,13 +243,28 @@
                             <div class="IDX-openHouseWrapper">
                                 <h4 class="IDX-ohFreeFormDate">{{ oh.freeFormDate }}</h4>
 
-                                <!-- Add Open House Schema http://schema.org/Event -->
+                                <!-- Add Open House Schema http://schema.org/Even -->
                                 <div class="IDX-openHouse" itemprop="event" itemscope itemtype="http://schema.org/Event">
                                     <meta itemProp="description" content="Open House"/>
-                                    <div class="IDX-openHouseTime"><span class="IDX-ohWhen">Time: </span><span class="IDX-ohFreeFormTime">{{ oh.freeFormTime }}</span>
+                                    <div class="IDX-openHouseTime"><span class="IDX-ohWhen">Time: </span>
+                                    <span class="IDX-ohFreeFormTime">{{ oh.freeFormTime }}</span>
                                     <meta itemProp="name" content="Open House - {{ oh.freeFormTime }}"/>
-                                    <meta itemprop="startDate" content="{{oh.freeFormDate|date('Y-m-d')}}" />
-                                    <meta itemprop="endDate" content="{{oh.freeFormDate|date('Y-m-d')}}" />
+                                    <meta itemprop="startDate" content="2099-09-15" />
+                                    <meta itemprop="endDate" content="2099-09-15" />
+                                <div class="event-venue" itemprop="location" itemscope itemtype="http://schema.org/Place">
+                                  <span itemprop="name">{{address}}</span>
+                                  <div class="address" itemprop="address" itemscope itemtype="http://schema.org/PostalAddress">
+                                      <span itemprop="streetAddress">{{address}}</span>
+                                      <span itemprop="addressLocality">{{city}}</span>
+                                      <span itemprop="addressRegion">{{state}}</span>
+                                      <span itemprop="postalCode">{{zipcode}}</span>
+                                	</div>
+                              	</div>
+                                    	<span itemProp="geo" itemscope="" itemType="http://schema.org/GeoCoordinates">
+                                    		<meta itemProp="latitude" content="{{ latitude }}"/>
+                                    		<meta itemProp="longitude" content="{{longitude}}"/>
+                                    	</span>
+                                    </span>
                                 </div>
                                     {% if oh.text %}<div class="IDX-ohText">{{ oh.text }}</div>{% endif %}
                                     {% if oh.descriptor %}<div class="IDX-ohDescriptor">{{ oh.descriptor }}</div> {% endif %}
