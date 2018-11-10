@@ -249,20 +249,20 @@
                                     <div class="IDX-openHouseTime"><span class="IDX-ohWhen">Time: </span>
                                     <span class="IDX-ohFreeFormTime">{{ oh.freeFormTime }}</span>
                                     <meta itemProp="name" content="Open House - {{ oh.freeFormTime }}"/>
-                                    <meta itemprop="startDate" content="{{oh.freeFormDate|date('Y-m-d')}}" />
-                                    <meta itemprop="endDate" content="{{oh.freeFormDate|date('Y-m-d')}}" />
+                                    <meta itemprop="startDate" content="{{ oh.freeFormDate | date('Y-m-d') }}" />
+                                    <meta itemprop="endDate" content="{{ oh.freeFormDate | date('Y-m-d') }}" />
                                 <div class="event-venue" itemprop="location" itemscope itemtype="http://schema.org/Place">
                                   <span itemprop="name">{{address}}</span>
                                   <div class="address" itemprop="address" itemscope itemtype="http://schema.org/PostalAddress">
-                                      <span itemprop="streetAddress">{{address}}</span>
-                                      <span itemprop="addressLocality">{{city}}</span>
-                                      <span itemprop="addressRegion">{{state}}</span>
-                                      <span itemprop="postalCode">{{zipcode}}</span>
+                                      <span itemprop="streetAddress">{{ address }}</span>
+                                      <span itemprop="addressLocality">{{ city }}</span>
+                                      <span itemprop="addressRegion">{{ state }}</span>
+                                      <span itemprop="postalCode">{{ zipcode }}</span>
                                 	</div>
                               	</div>
                                     	<span itemProp="geo" itemscope="" itemType="http://schema.org/GeoCoordinates">
                                     		<meta itemProp="latitude" content="{{ latitude }}"/>
-                                    		<meta itemProp="longitude" content="{{longitude}}"/>
+                                    		<meta itemProp="longitude" content="{{ longitude }}"/>
                                     	</span>
                                     </span>
                                 </div>
