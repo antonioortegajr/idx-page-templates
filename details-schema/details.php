@@ -249,8 +249,8 @@
                                     <div class="IDX-openHouseTime"><span class="IDX-ohWhen">Time: </span>
                                     <span class="IDX-ohFreeFormTime">{{ oh.freeFormTime }}</span>
                                     <meta itemProp="name" content="Open House - {{ oh.freeFormTime }}"/>
-                                    <meta itemprop="startDate" content="2099-09-15" />
-                                    <meta itemprop="endDate" content="2099-09-15" />
+                                    <meta itemprop="startDate" content="{{oh.freeFormDate|date('Y-m-d')}}" />
+                                    <meta itemprop="endDate" content="{{oh.freeFormDate|date('Y-m-d')}}" />
                                 <div class="event-venue" itemprop="location" itemscope itemtype="http://schema.org/Place">
                                   <span itemprop="name">{{address}}</span>
                                   <div class="address" itemprop="address" itemscope itemtype="http://schema.org/PostalAddress">
