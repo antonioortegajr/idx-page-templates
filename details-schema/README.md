@@ -56,5 +56,5 @@ https://twig.symfony.com/doc/2.x/filters/date.html
 
 As this definition cahnges there may be warnings. Additionally some of the vocabulary used seems to not fit real estate date perfectly.
 
-This is not a guarantee that google search result pages will show open house data.
+This is [not a guarantee that google search result pages will show open house data](https://developers.google.com/search/docs/guides/sd-policies).
 
