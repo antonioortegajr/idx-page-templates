@@ -15,7 +15,7 @@ The assumption that feeding search engines more data is likely true, but the mai
 * Event http://schema.org/Event - description, url, name, startDate, endDate, location
 * Geo http://schema.org/GeoCoordinates - latitude, longitude
 
-This markup has been added as [microdata](https://schema.org/docs/gs.html).
+This markup has been added as [JSON-LD](https://en.wikipedia.org/wiki/JSON-LD).
 
 ## Use
 
