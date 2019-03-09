@@ -1,5 +1,5 @@
 {% import "detailsTools-1.002.twig" as tools %}
-{# sample #}
+
 {# main idx page content here #}
 {% block idxContent %}
     {% spaceless %}
@@ -119,7 +119,7 @@
                         <div id="IDX-detailsMedia">
                             <div id="IDX-primaryPhoto" class="IDX-detailsPhotosWrap">
                                 <a href="#"  class="IDX-thumbnail">
-                                    <img src="{{ imageData.1.url }}" id="IDX-detailsPrimaryImg" data-img-index="1"/>
+                                    <img src="{{ imageData|first.url }}" id="IDX-detailsPrimaryImg" data-img-index="1"/>
                                 </a>
                                 {% if imageData.totalCount > 1 %}
                                     <a id="IDX-arrow-previous" class="IDX-arrow">
@@ -130,7 +130,7 @@
                                     </a>
                                 {% endif %}
                             </div>
-                            <div id="IDX-detailsShowcaseSlides" style="overflow: hidden; height: auto; position: relative; padding: 8px 30px; max-width: 1620px; overflow-x: hidden; margin: 0 auto;">
+                            <div id="IDX-detailsShowcaseSlides" style="overflow: hidden; height: auto; position: relative; padding: 8px 30px; max-width: 1620px; overflow-x: hidden; margin: 0 auto;" class="{% if imageData.totalCount <= 1 %}IDX-hide{% endif %}">
                                 <div class="IDX-carouselWrapper" data-count="{{ imageData.totalCount }}" style="right: 0;">
                                     {% for key, img in imageData if img.url %}
                                         <a href="#" data-index="{{ loop.index0 }}" class="IDX-carouselThumb IDX-detailsImage-{{ key }}{% if key == 1 %} IDX-showcaseSlide-active{% endif %}" style="position: relative">
@@ -154,31 +154,31 @@
                                 </div>
                             {% endif %}
                             {% if idxID == 'a999' or mlsRules.disableShareThis == 'n' %}
-                                <!-- sharethis buttons -->
-                                <div id="IDX-sharethis" class="IDX-row-content IDX-center">
-                                    <span class='st_sharethis_large' displayText='ShareThis' st_url='{{ propertyLink }}' st_title='I just found a property and wanted to share it with you!' st_summary='Above is the link to the property that I found. What do you think?' st_image='{{ imageData.1.url }}'></span>
-                                    <span class='st_facebook_large' displayText='Facebook' st_url='{{ propertyLink }}' st_title='I just found a property and wanted to share it with you!' st_summary='Above is the link to the property that I found. What do you think?' st_image='{{ imageData.1.url }}'></span>
-                                    <span class='st_twitter_large' displayText='Tweet' st_url='{{ propertyLink }}' st_title='I just found a property and wanted to share it with you!' st_summary='Above is the link to the property that I found. What do you think?' st_image='{{ imageData.1.url }}'></span>
-                                    <span class='st_linkedin_large' displayText='LinkedIn' st_url='{{ propertyLink }}' st_title='I just found a property and wanted to share it with you!' st_summary='Above is the link to the property that I found. What do you think?' st_image='{{ imageData.1.url }}'></span>
-                                    <span class='st_pinterest_large' displayText='Pinterest' st_url='{{ propertyLink }}' st_title='I just found a property and wanted to share it with you!' st_summary='Above is the link to the property that I found. What do you think?' st_image='{{ imageData.1.url }}'></span>
-                                    <span class='st_email_large' displayText='Email' st_url='{{ propertyLink }}' st_title='I just found a property and wanted to share it with you!' st_summary='Above is the link to the property that I found. What do you think?' st_image='{{ imageData.1.url }}'></span>
-                                </div>
+                                {% if clientRules.sharePropertyMethod == 'mailTo' %}
+                                    <div class="idx-share-property IDX-center">
+                                        {{ tools.mailto }}
+                                    </div>
+                                {% else %}
+                                    {% import "shareThis-1.000.twig" as shareTools %}
+                                    <div id="IDX-sharethis" class="IDX-row-content IDX-center">
+                                        {{ shareTools.inline() }}
+                                    </div>
+                                {% endif %}
                             {% endif %}
                         </div>
                         <hr>
-                        <!-- add address Schema using http://schema.org/PostalAddress -->
-                        <div id="IDX-detailsAddress" itemprop="address" itemscope itemtype="http://schema.org/PostalAddress">
+                        <div id="IDX-detailsAddress">
                             <a href="#" class="IDX-psudolink">
-                                <div class="IDX-detailsAddressInfo" itemprop="streetAddress">
+                                <div class="IDX-detailsAddressInfo">
                                     <span class="IDX-detailsAddressNumber">{{ streetNumber }} </span>
                                     <span class="IDX-detailsAddressDirection">{{ streetDirection }} </span>
                                     <span class="IDX-detailsAddressName">{{ streetName }}</span>{% if unitNumber %}&nbsp;<span class="IDX-detailsAddressUnitNumber">{{ unitNumber }}</span>{% endif %}{% if streetName %}<span class="IDX-detailsEndAddressComma">,&nbsp;</span>{% endif %}
                                 </div>
                                 <div class="IDX-detailsAddressLocationInfo">
-                                    <span class="IDX-detailsAddressCity" itemprop="addressLocality">{{ cityName }}</span>,
-                                    <span class="IDX-detailsAddressState" itemprop="addressRegion">{{ state }} </span>
+                                    <span class="IDX-detailsAddressCity">{{ cityName }}</span>,
+                                    <span class="IDX-detailsAddressState">{{ state }} </span>
                                     <span class="IDX-detailsAddressStateAbrv">{{ stateAbrv }}</span>
-                                    <span class="IDX-detailsAddressZipcode" itemprop="postalCode">{{ zipcode }}</span>{% if zip4 > 0 %}<span class="IDX-addressZip4">-{{ zip4 }}{% endif %}
+                                    <span class="IDX-detailsAddressZipcode">{{ zipcode }}</span>{% if zip4 > 0 %}<span class="IDX-addressZip4">-{{ zip4 }}{% endif %}
                                 </div>
                             </a>
                         </div>
@@ -186,27 +186,9 @@
                             <div class="IDX-panel-heading">
                                 {{ _self.field(_context, 'listingID', labels.listingID)}}
                             </div>
-                            <!-- Add listing price Schema http://schema.org/Offer -->
-                            <div class="IDX-panel-body" itemProp="offers" itemscope="" itemType="http://schema.org/Offer">
-                                <!-- listing price -->
-                                {% if idxStatus == 'sold' %}
-                                    {% if rntLse == 'lease' and rntLsePrice > 0 %}
-                                        {{ _self.priceField('leased',rntLsePrice) }}
-                                    {% elseif rntLse == 'rental' and rntLsePrice > 0 %}
-                                        {{ _self.priceField('rented',rntLsePrice) }}
-                                    {% elseif soldPrice and soldPrice > 0 %}
-                                        {{ _self.priceField('soldPrice', soldPrice) }}
-                                    {% elseif listingPrice %}
-                                        {{ _self.priceField('soldPrice', listingPrice) }}
-                                    {% endif %}
+                            <div class="IDX-panel-body">
+                                {{ _self.priceField(priceData) }}
 
-                                    {{ _self.field(_context, 'soldDate', labels.soldDate, { dateFormat: 'n/d/Y' } )}}
-                                {% elseif (rntLse == 'lease' or rntLse == 'rental') and rntLsePrice > 0 %}
-                                    {{ _self.priceField(rntLse,rntLsePrice) }}
-                                {% else %}
-                                    {{ _self.priceField('listingPrice',listingPrice) }}
-                                    <meta itemProp="price" content="{{listingPrice | replace({"," : ""}) | replace({"$" : ""}) }}"/><meta itemProp="priceCurrency" content="USD"/>
-                                {% endif %}
                                 {% if pricePerSqFt > 0 %}
                                     {{ _self.field(_context, 'pricePerSqFt', labels.pricePerSqFt, { priceFormat: true }) }}
                                 {% endif %}
@@ -215,6 +197,7 @@
                                     {{ tools.bankRateTool(displayBankRateEstPayment, mortgagePayment) }}
                                 {% endif %}
                                 {{ _self.field(_context, 'propStatus', labels.propStatus) }}
+                                {{ _self.field(_context, 'soldDate', labels.soldDate, { dateFormat: 'n/d/Y' }) }}
                                 {{ _self.field(_context, 'bedrooms', labels.bedrooms) }}
                                 {{ _self.baths(_context) }}
                                 {{ _self.checkNum(_context, 'sqFt', labels.sqFt) }}
@@ -242,39 +225,85 @@
                         {% for oh in mediaData.oh %}
                             <div class="IDX-openHouseWrapper">
                                 <h4 class="IDX-ohFreeFormDate">{{ oh.freeFormDate }}</h4>
-
-                                <!-- Add Open House Schema http://schema.org/Even -->
-                                <div class="IDX-openHouse" itemprop="event" itemscope itemtype="http://schema.org/Event">
-                                    <meta itemProp="description" content="Open House"/>
-                                    <div class="IDX-openHouseTime"><span class="IDX-ohWhen">Time: </span>
-                                    <span class="IDX-ohFreeFormTime">{{ oh.freeFormTime }}</span>
-                                    <meta itemProp="name" content="Open House - {{ oh.freeFormTime }}"/>
-                                    <meta itemprop="startDate" content="{{ oh.freeFormDate | date('Y-m-d') }}" />
-                                    <meta itemprop="endDate" content="{{ oh.freeFormDate | date('Y-m-d') }}" />
-                                <div class="event-venue" itemprop="location" itemscope itemtype="http://schema.org/Place">
-                                  <span itemprop="name">{{address}}</span>
-                                  <div class="address" itemprop="address" itemscope itemtype="http://schema.org/PostalAddress">
-                                      <span itemprop="streetAddress">{{ address }}</span>
-                                      <span itemprop="addressLocality">{{ city }}</span>
-                                      <span itemprop="addressRegion">{{ state }}</span>
-                                      <span itemprop="postalCode">{{ zipcode }}</span>
-                                	</div>
-                              	</div>
-                                    	<span itemProp="geo" itemscope="" itemType="http://schema.org/GeoCoordinates">
-                                    		<meta itemProp="latitude" content="{{ latitude }}"/>
-                                    		<meta itemProp="longitude" content="{{ longitude }}"/>
-                                    	</span>
-                                    </span>
-                                </div>
+                                <div class="IDX-openHouse">
+                                    <div class="IDX-openHouseTime"><span class="IDX-ohWhen">Time: </span><span class="IDX-ohFreeFormTime">{{ oh.freeFormTime }}</span></div>
                                     {% if oh.text %}<div class="IDX-ohText">{{ oh.text }}</div>{% endif %}
-                                    {% if oh.descriptor %}<div class="IDX-ohDescriptor">{{ oh.descriptor }}</div> {% endif %}
-                                    {% if oh.ohLink %}<a href="{{ oh.ohLink }}" class="IDX-ohLink">More Info</a><meta itemProp="url" content="{{ oh.ohLink }}"/>{% endif %}
+                                    {% if oh.descriptor %}<div class="IDX-ohDescriptor">{{ oh.descriptor }}</div>{% endif %}
+                                    {% if oh.ohLink %}<a href="{{ oh.ohLink }}" class="IDX-ohLink">More Info</a>{% endif %}
                                     {% if oh.hostedBy %}<div class="IDX-ohHostedBy">{{ oh.hostedBy }}</div>{% endif %}
                                 </div>
                             </div>
                         {% endfor %}
                         <a id="IDX-ohMoreInfo" href="{{ moreInfoLink }}">Request More Info</a>
                     </div>
+                    <!-- add schema array -->
+                    <script type='application/ld+json'>
+                    [{
+                        "@context": "http://schema.org/",
+                        "@type": "SingleFamilyResidence",
+                        "address": {
+                            "@type": "PostalAddress",
+                            "streetAddress": "{{ streetNumber }} {{ streetName }}",
+                            "addressLocality": "{{ cityName }}",
+                            "addressRegion": "{{ stateAbrv }}",
+                            "postalCode": "{{ zipcode }}"
+                        },
+                        "image": "{{ imageData.1.url }}",
+                        "geo": {
+                            "@type": "GeoCoordinates",
+                            "latitude":{{latitude}},
+                            "longitude":{{longitude}}
+                        }
+                    }, {
+                        "@context": "http://schema.org/",
+                        "@type": "Product",
+                        "name": "{{ streetNumber }} {{ streetName }}",
+                        "description": "Home For Sale - {{ streetNumber }} {{ streetName }}, {{ cityName }}, {{ stateAbrv }} {{ zipcode }}",
+                        "url": "{{ propertyLink }}",
+                        "offers": {
+                            "@type": "Offer",
+                            "priceCurrency": "USD",
+                            "url": "{{ propertyLink }}",
+                            "price": {{ listingPrice | replace({",": ""}) | replace({"$": ""}) }}
+                        },
+                        "image": ["{{ imageData.1.url }}","{{ imageData.2.url }}"]
+                    }, {
+                        "@context": "http://schema.org/",
+                        "@type": "Event",
+                        "name": "Open House - {{ oh.freeFormTime }}",
+                        "image": "{{ imageData.1.url }}",
+                        "description": "Open house {{ oh.freeFormDate | date('Y-m-d') }}, at {{ streetNumber }} {{ streetName }}",
+                        "startDate": "{{ oh.freeFormDate | date('Y-m-d') }}",
+                        "endDate": "{{ oh.freeFormDate | date('Y-m-d') }}",
+                        "url": "{{ propertyLink }}",
+                        "location": {
+                            "@type": "Place",
+                            "name": "{{ streetNumber }} {{ streetName }}",
+                            "address": {
+                                "@type": "PostalAddress",
+                                "streetAddress": "{{ streetNumber }} {{ streetName }}",
+                                "postalCode": "{{ zipcode }}",
+                                "addressLocality": "{{ cityName }}",
+                                "addressRegion": "{{ stateAbrv }}"
+                            },
+                            "geo": {
+                                "@type": "GeoCoordinates",
+                                "latitude": {{latitude}},
+                                "longitude": {{longitude}}
+                        },
+                        "offers": {
+                            "@type": "Offer",
+                            "url": "{{ propertyLink }}",
+                            "price": {{ listingPrice | replace({",": ""}) | replace({"$": ""}) }},
+                            "priceCurrency": "USD"
+                        },
+                        "image": "{{ imageData.1.url }}"
+                    }
+                    }]
+                    
+                   </script>
+                    
+                    <!-- end schema array -->
                     {% endif %}
 
                     {% if mediaData.vtCount > 0 %}
@@ -288,23 +317,10 @@
 
                 {# The BankRate for standard wrapper. The BankRate for mobile is in mobileFooter twig #}
                 {% if wrapperMode != 'mobile' %}
-                    {% if idxStatus == 'sold' %}
-                        {% if rntLse == 'lease' and rntLsePrice > 0 %}
-                            {% set price = rntLsePrice %}
-                        {% elseif rntLse == 'rental' and rntLsePrice > 0 %}
-                            {% set price = rntLsePrice %}
-                        {% elseif soldPrice and soldPrice > 0 %}
-                            {% set price = soldPrice %}
-                        {% endif %}
-                    {% elseif (rntLse == 'lease' or rntLse == 'rental') and rntLsePrice > 0 %}
-                        {% set price = rntLsePrice %}
-                    {% else %}
-                        {% set price = listingPrice %}
-                    {% endif %}
                     {% if displayBankRateEstPayment == 'y'%}
-                        <div id="IDX-BankRateTool-Dialog" title="Mortgage Rates - {{ cityName }}, {{ stateAbrv }} {{ zipcode }} {{ price }}">
+                        <div id="IDX-BankRateTool-Dialog" title="Mortgage Rates - {{ cityName }}, {{ stateAbrv }} {{ zipcode }} {{ priceData.value.raw }}">
                             <div id="IDX-mortgageDefaultQueryParameters" class="IDX-hidden">
-                                {"zipcode": "{{ zipcode }}", "price": "{{ mortgageListingPrice }}"}
+                                {"zipcode": "{{ zipcode }}", "price": "{{ priceData.value.raw }}"}
                             </div>
                             <div id="IDX-mortgageRatesContent">
                                 <div id="IDX-mortgageRatesTable">
@@ -403,7 +419,7 @@
                                     class="IDX-detailsMap"
                                     data-lat="{{ latitude }}"
                                     data-lng="{{ longitude }}"
-                                    data-price="{{ price }}"
+                                    data-price="{{ priceData.value.raw }}"
                                     data-idxStatus="{{ idxStatus }}"
                                     data-idxid="{{ idxid }}"
                                     data-listingid="{{ listingID }}"
@@ -514,26 +530,13 @@
     {% include 'facebookPrecache-1.000.twig' %}
 {% endblock %}
 
-{% macro priceField(type,price,idxID) %}
+{% macro priceField(price) %}
     {% spaceless %}
-        {% if type == 'soldPrice' %}
-            {% set label = 'Sold For' %}
-        {% elseif type == 'leased' %}
-            {% set label = 'Leased For' %}
-        {% elseif type == 'rented' %}
-            {% set label = 'Rented For' %}
-        {% elseif type == 'lease' %}
-            {% set label = 'Lease Price' %}
-        {% elseif type == 'rental' %}
-            {% set label = 'Rental Price' %}
-        {% else %}
-            {% set label = labels.listingPrice %}
-        {% endif %}
         {# add rules #}
-        {% set rules = attribute(mlsRules,idxID) %}
-        <div class="IDX-field-{{ type }} IDX-field-price IDX-field">
-            <span class="IDX-label">{{ label }}</span>
-            <span class="IDX-text">{{ formatPrice(price) }}{{ rules.priceSuffix }}</span>
+        {% set rules = attribute(mlsRules, idxID) %}
+        <div class="IDX-field-{{ price.field }} IDX-field-price IDX-field">
+            <span class="IDX-label">{{ price.label }}</span>
+            <span class="IDX-text">{{ price.value.formatted }}{{ rules.priceSuffix }}</span>
         </div>
     {% endspaceless %}
 {% endmacro %}
