@@ -260,12 +260,6 @@
                         "name": "{{ streetNumber }} {{ streetName }}",
                         "description": "Home For Sale - {{ streetNumber }} {{ streetName }}, {{ cityName }}, {{ stateAbrv }} {{ zipcode }}",
                         "url": "{{ propertyLink }}",
-                        "offers": {
-                            "@type": "Offer",
-                            "priceCurrency": "USD",
-                            "url": "{{ propertyLink }}",
-                            "price": {{ listingPrice | replace({",": ""}) | replace({"$": ""}) }}
-                        },
                         "image": ["{{ imageData.1.url }}","{{ imageData.2.url }}"]
                     }, {
                         "@context": "http://schema.org/",
