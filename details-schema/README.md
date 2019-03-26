@@ -17,6 +17,10 @@ The assumption that feeding search engines more data is likely true, but the mai
 
 This markup has been added as [JSON-LD](https://en.wikipedia.org/wiki/JSON-LD).
 
+However [Google recommends](https://developers.google.com/search/docs/guides/intro-structured-data) using JSON-LD for structured data whenever possible.
+
+This is being explored in the dev branch of this repo.
+
 ## Use
 
 Appply this details template to a client account.
